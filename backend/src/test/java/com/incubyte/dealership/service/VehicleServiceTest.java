@@ -128,4 +128,41 @@ class VehicleServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> vehicleService.deleteVehicle(java.util.UUID.randomUUID()));
     }
+
+    // Sprint 61 RED: Purchase vehicle should reduce quantity when stock is sufficient
+    @Test
+    void purchaseVehicle_shouldReduceQuantity_whenStockIsAvailable() {
+        Vehicle saved = vehicleRepository.save(Vehicle.builder()
+                .make("Toyota").model("Camry").category("Sedan")
+                .price(new BigDecimal("25000")).quantity(5).build());
+
+        Vehicle result = vehicleService.purchaseVehicle(saved.getId(), 2);
+
+        assertEquals(3, result.getQuantity());
+        assertEquals(3, vehicleRepository.findById(saved.getId()).orElseThrow().getQuantity());
+    }
+
+    // Sprint 61 RED: Purchase vehicle should throw IllegalArgumentException when stock is insufficient
+    @Test
+    void purchaseVehicle_shouldThrowException_whenStockIsInsufficient() {
+        Vehicle saved = vehicleRepository.save(Vehicle.builder()
+                .make("Toyota").model("Camry").category("Sedan")
+                .price(new BigDecimal("25000")).quantity(2).build());
+
+        assertThrows(IllegalArgumentException.class,
+                () -> vehicleService.purchaseVehicle(saved.getId(), 5));
+    }
+
+    // Sprint 61 RED: Restock vehicle should increase quantity
+    @Test
+    void restockVehicle_shouldIncreaseQuantity_whenCalled() {
+        Vehicle saved = vehicleRepository.save(Vehicle.builder()
+                .make("Toyota").model("Camry").category("Sedan")
+                .price(new BigDecimal("25000")).quantity(2).build());
+
+        Vehicle result = vehicleService.restockVehicle(saved.getId(), 10);
+
+        assertEquals(12, result.getQuantity());
+        assertEquals(12, vehicleRepository.findById(saved.getId()).orElseThrow().getQuantity());
+    }
 }
