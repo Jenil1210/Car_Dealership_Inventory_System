@@ -59,4 +59,19 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.token").value("mocked-jwt-token"))
                 .andExpect(jsonPath("$.role").value("USER"));
     }
+
+    @Test
+    void register_shouldReturnBadRequest_whenRequestHasValidationErrors() throws Exception {
+        RegisterRequest request = RegisterRequest.builder()
+                .name("") // Invalid blank name
+                .email("invalid-email") // Invalid email format
+                .password("") // Invalid blank password
+                .role(null) // Invalid null role
+                .build();
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
 }
