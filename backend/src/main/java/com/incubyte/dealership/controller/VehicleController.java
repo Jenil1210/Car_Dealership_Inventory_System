@@ -68,4 +68,17 @@ public class VehicleController {
         vehicleService.deleteVehicle(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{id}/purchase")
+    public ResponseEntity<VehicleResponse> purchaseVehicle(@PathVariable UUID id, @RequestParam int quantity) {
+        VehicleResponse response = VehicleMapper.toResponse(vehicleService.purchaseVehicle(id, quantity));
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/restock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<VehicleResponse> restockVehicle(@PathVariable UUID id, @RequestParam int quantity) {
+        VehicleResponse response = VehicleMapper.toResponse(vehicleService.restockVehicle(id, quantity));
+        return ResponseEntity.ok(response);
+    }
 }

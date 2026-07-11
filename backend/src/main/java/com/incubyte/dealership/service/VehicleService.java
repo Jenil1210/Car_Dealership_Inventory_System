@@ -50,4 +50,21 @@ public class VehicleService {
         }
         vehicleRepository.deleteById(id);
     }
+
+    public Vehicle purchaseVehicle(UUID id, int quantity) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with id: " + id));
+        if (vehicle.getQuantity() < quantity) {
+            throw new IllegalArgumentException("Insufficient stock for vehicle: " + id);
+        }
+        vehicle.setQuantity(vehicle.getQuantity() - quantity);
+        return vehicleRepository.save(vehicle);
+    }
+
+    public Vehicle restockVehicle(UUID id, int quantity) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with id: " + id));
+        vehicle.setQuantity(vehicle.getQuantity() + quantity);
+        return vehicleRepository.save(vehicle);
+    }
 }
