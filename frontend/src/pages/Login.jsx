@@ -6,6 +6,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,14 +60,24 @@ function Login() {
             <label htmlFor="password" className="block text-sm font-semibold mb-2 text-slate-300">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-700 rounded-lg text-white border border-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 pr-10 bg-slate-700 rounded-lg text-white border border-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-450 hover:text-white transition-colors cursor-pointer"
+                aria-label="Toggle visibility"
+              >
+                <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
+            </div>
           </div>
 
           <button
