@@ -29,6 +29,16 @@ function Dashboard() {
     }
   };
 
+  const handlePurchase = async (id) => {
+    setError('');
+    try {
+      await client.post(`/vehicles/${id}/purchase?quantity=1`);
+      await fetchVehicles();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Purchase failed');
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
@@ -53,7 +63,7 @@ function Dashboard() {
         </header>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg">
+          <div className="mb-6 p-4 bg-red-900/50 border border-red-500 text-red-200 rounded-lg text-center">
             {error}
           </div>
         )}
@@ -85,7 +95,7 @@ function Dashboard() {
           <div className="flex items-end">
             <button
               type="submit"
-              className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-bold transition-colors cursor-pointer"
+              className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-bold transition-colors cursor-pointer text-white"
             >
               Search
             </button>
@@ -100,18 +110,28 @@ function Dashboard() {
             </div>
           ) : (
             vehicles.map((vehicle) => (
-              <div key={vehicle.id} className="bg-slate-800 p-6 rounded-2xl border border-slate-750 shadow-md">
-                <h3 className="text-xl font-bold mb-2 text-indigo-300">{vehicle.make} {vehicle.model}</h3>
-                <div className="space-y-1.5 text-slate-300 text-sm">
-                  <p><span className="font-semibold">Category:</span> {vehicle.category}</p>
-                  <p><span className="font-semibold">Price:</span> ${vehicle.price.toLocaleString()}</p>
-                  <p>
-                    <span className="font-semibold">Stock:</span>{' '}
-                    <span className={vehicle.quantity > 0 ? 'text-emerald-400' : 'text-red-400'}>
-                      {vehicle.quantity > 0 ? `${vehicle.quantity} available` : 'Out of stock'}
-                    </span>
-                  </p>
+              <div key={vehicle.id} className="bg-slate-800 p-6 rounded-2xl border border-slate-750 shadow-md flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl font-bold mb-2 text-indigo-300">{vehicle.make} {vehicle.model}</h3>
+                  <div className="space-y-1.5 text-slate-300 text-sm">
+                    <p><span className="font-semibold">Category:</span> {vehicle.category}</p>
+                    <p><span className="font-semibold">Price:</span> ${vehicle.price.toLocaleString()}</p>
+                    <p>
+                      <span className="font-semibold">Stock:</span>{' '}
+                      <span className={vehicle.quantity > 0 ? 'text-emerald-400 font-medium' : 'text-red-400 font-medium'}>
+                        {vehicle.quantity > 0 ? `${vehicle.quantity} available` : 'Out of stock'}
+                      </span>
+                    </p>
+                  </div>
                 </div>
+
+                <button
+                  onClick={() => handlePurchase(vehicle.id)}
+                  disabled={vehicle.quantity === 0}
+                  className="w-full mt-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 disabled:text-slate-500 rounded-lg text-white font-bold transition-colors cursor-pointer shadow-lg shadow-emerald-500/10"
+                >
+                  {vehicle.quantity > 0 ? 'Purchase' : 'Out of stock'}
+                </button>
               </div>
             ))
           )}
