@@ -56,4 +56,76 @@ class VehicleServiceTest {
 
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    void addVehicle_shouldSaveAndReturnVehicle_whenValid() {
+        Vehicle vehicle = Vehicle.builder()
+                .make("BMW").model("X5").category("SUV")
+                .price(new BigDecimal("60000")).quantity(2)
+                .build();
+
+        Vehicle saved = vehicleService.addVehicle(vehicle);
+
+        assertNotNull(saved.getId());
+        assertEquals("BMW", saved.getMake());
+        assertEquals("X5", saved.getModel());
+    }
+
+    @Test
+    void searchVehicles_shouldReturnMatchingVehicles_whenFilterApplied() {
+        vehicleRepository.save(Vehicle.builder()
+                .make("Toyota").model("Camry").category("Sedan")
+                .price(new BigDecimal("25000")).quantity(5).build());
+        vehicleRepository.save(Vehicle.builder()
+                .make("Ford").model("F-150").category("Truck")
+                .price(new BigDecimal("40000")).quantity(2).build());
+
+        List<Vehicle> result = vehicleService.searchVehicles("Toyota", null, null, null, null);
+
+        assertEquals(1, result.size());
+        assertEquals("Toyota", result.get(0).getMake());
+    }
+
+    @Test
+    void updateVehicle_shouldUpdateFields_whenVehicleExists() {
+        Vehicle saved = vehicleRepository.save(Vehicle.builder()
+                .make("Honda").model("Civic").category("Sedan")
+                .price(new BigDecimal("22000")).quantity(3).build());
+
+        Vehicle updated = Vehicle.builder()
+                .make("Honda").model("Accord").category("Sedan")
+                .price(new BigDecimal("28000")).quantity(4).build();
+
+        Vehicle result = vehicleService.updateVehicle(saved.getId(), updated);
+
+        assertEquals("Accord", result.getModel());
+        assertEquals(new BigDecimal("28000"), result.getPrice());
+    }
+
+    @Test
+    void updateVehicle_shouldThrowException_whenVehicleNotFound() {
+        Vehicle updated = Vehicle.builder()
+                .make("Honda").model("Accord").category("Sedan")
+                .price(new BigDecimal("28000")).quantity(4).build();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> vehicleService.updateVehicle(java.util.UUID.randomUUID(), updated));
+    }
+
+    @Test
+    void deleteVehicle_shouldRemoveVehicle_whenExists() {
+        Vehicle saved = vehicleRepository.save(Vehicle.builder()
+                .make("Ford").model("Mustang").category("Sports")
+                .price(new BigDecimal("55000")).quantity(1).build());
+
+        vehicleService.deleteVehicle(saved.getId());
+
+        assertFalse(vehicleRepository.existsById(saved.getId()));
+    }
+
+    @Test
+    void deleteVehicle_shouldThrowException_whenNotFound() {
+        assertThrows(IllegalArgumentException.class,
+                () -> vehicleService.deleteVehicle(java.util.UUID.randomUUID()));
+    }
 }
