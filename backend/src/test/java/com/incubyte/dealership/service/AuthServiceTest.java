@@ -1,6 +1,7 @@
 package com.incubyte.dealership.service;
 
 import com.incubyte.dealership.dto.AuthResponse;
+import com.incubyte.dealership.dto.LoginRequest;
 import com.incubyte.dealership.dto.RegisterRequest;
 import com.incubyte.dealership.model.Role;
 import com.incubyte.dealership.model.User;
@@ -77,5 +78,47 @@ class AuthServiceTest {
                 .build();
 
         assertThrows(IllegalArgumentException.class, () -> authService.register(request));
+    }
+
+    @Test
+    void login_shouldReturnJwtToken_whenCredentialsAreValid() {
+        // Pre-register a user first
+        RegisterRequest registerRequest = RegisterRequest.builder()
+                .name("Charlie")
+                .email("charlie@example.com")
+                .password("Password@123")
+                .role(Role.USER)
+                .build();
+        authService.register(registerRequest);
+
+        LoginRequest loginRequest = LoginRequest.builder()
+                .email("charlie@example.com")
+                .password("Password@123")
+                .build();
+
+        AuthResponse response = authService.login(loginRequest);
+
+        assertNotNull(response);
+        assertNotNull(response.getToken());
+        assertEquals(Role.USER, response.getRole());
+    }
+
+    @Test
+    void login_shouldThrowIllegalArgumentException_whenPasswordIsWrong() {
+        // Pre-register a user first
+        RegisterRequest registerRequest = RegisterRequest.builder()
+                .name("Dave")
+                .email("dave@example.com")
+                .password("Password@123")
+                .role(Role.USER)
+                .build();
+        authService.register(registerRequest);
+
+        LoginRequest loginRequest = LoginRequest.builder()
+                .email("dave@example.com")
+                .password("WrongPassword!")
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> authService.login(loginRequest));
     }
 }
