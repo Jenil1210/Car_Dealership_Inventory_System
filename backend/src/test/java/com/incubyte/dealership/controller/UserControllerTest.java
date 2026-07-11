@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -75,6 +76,29 @@ class UserControllerTest {
     @WithMockUser(username = "testuser@example.com", roles = "USER")
     void getAllUsers_shouldReturn403_whenNotAdmin() throws Exception {
         mockMvc.perform(get("/api/users"))
+                .andExpect(status().isForbidden());
+    }
+
+    // Sprint 58 RED: Admin should be able to delete a user and get 204 No Content
+    @Test
+    @WithMockUser(username = "admin@example.com", roles = "ADMIN")
+    void deleteUser_shouldReturn204NoContent_whenAdmin() throws Exception {
+        User saved = userRepository.save(User.builder()
+                .name("To Delete")
+                .email("todelete@example.com")
+                .password("password")
+                .role(Role.USER)
+                .build());
+
+        mockMvc.perform(delete("/api/users/" + saved.getId()))
+                .andExpect(status().isNoContent());
+    }
+
+    // Sprint 58 RED: Non-Admin user should get 403 Forbidden when trying to delete a user
+    @Test
+    @WithMockUser(username = "testuser@example.com", roles = "USER")
+    void deleteUser_shouldReturn403Forbidden_whenNotAdmin() throws Exception {
+        mockMvc.perform(delete("/api/users/123"))
                 .andExpect(status().isForbidden());
     }
 }
