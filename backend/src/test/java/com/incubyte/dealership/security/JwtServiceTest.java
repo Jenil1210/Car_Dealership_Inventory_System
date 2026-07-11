@@ -46,4 +46,25 @@ class JwtServiceTest {
         String email = jwtService.extractUsername(token);
         assertEquals("alice@example.com", email);
     }
+
+    @Test
+    void isTokenValid_shouldReturnTrueForValidToken() {
+        User user = User.builder()
+                .name("Alice")
+                .email("alice@example.com")
+                .password("password")
+                .role(Role.USER)
+                .build();
+
+        String token = jwtService.generateToken(user);
+
+        // Custom minimal user details implementation for testing validation
+        org.springframework.security.core.userdetails.UserDetails userDetails = 
+            org.springframework.security.core.userdetails.User.withUsername("alice@example.com")
+                .password("password")
+                .roles("USER")
+                .build();
+
+        assertTrue(jwtService.isTokenValid(token, userDetails));
+    }
 }
