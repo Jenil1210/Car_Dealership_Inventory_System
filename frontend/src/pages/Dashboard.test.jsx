@@ -26,10 +26,8 @@ describe('Dashboard Component', () => {
 
     render(<Dashboard />);
 
-    // Check loading or header state
     expect(screen.getByText(/vehicle inventory/i)).toBeInTheDocument();
 
-    // Verify API call on mount
     await waitFor(() => {
       expect(client.get).toHaveBeenCalledWith('/vehicles');
       expect(screen.getByText('Tesla Model 3')).toBeInTheDocument();
@@ -47,5 +45,25 @@ describe('Dashboard Component', () => {
     fireEvent.click(logoutBtn);
 
     expect(localStorage.getItem('token')).toBeNull();
+  });
+
+  // Sprints 77 & 78: Search Filter Test
+  it('calls search API with params when search form is submitted', async () => {
+    client.get.mockResolvedValueOnce({ data: [] }); // Initial mount fetch
+    client.get.mockResolvedValueOnce({ data: [] }); // Search fetch
+
+    render(<Dashboard />);
+
+    fireEvent.change(screen.getByLabelText(/make/i), { target: { value: 'Tesla' } });
+    fireEvent.change(screen.getByLabelText(/model/i), { target: { value: 'Model Y' } });
+    
+    const searchBtn = screen.getByRole('button', { name: /search/i });
+    fireEvent.click(searchBtn);
+
+    await waitFor(() => {
+      expect(client.get).toHaveBeenLastCalledWith('/vehicles/search', {
+        params: { make: 'Tesla', model: 'Model Y' },
+      });
+    });
   });
 });

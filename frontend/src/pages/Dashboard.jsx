@@ -61,9 +61,10 @@ function Dashboard() {
         {/* Search form */}
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-slate-800 p-6 rounded-2xl">
           <div>
-            <label className="block text-sm font-semibold mb-2 text-slate-300">Make (Manufacturer)</label>
+            <label htmlFor="make" className="block text-sm font-semibold mb-2 text-slate-300">Make (Manufacturer)</label>
             <input
               type="text"
+              id="make"
               value={makeQuery}
               onChange={(e) => setMakeQuery(e.target.value)}
               className="w-full px-4 py-2 bg-slate-700 rounded-lg text-white border border-slate-600 focus:outline-none focus:border-indigo-500"
@@ -71,9 +72,10 @@ function Dashboard() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold mb-2 text-slate-300">Model</label>
+            <label htmlFor="model" className="block text-sm font-semibold mb-2 text-slate-300">Model</label>
             <input
               type="text"
+              id="model"
               value={modelQuery}
               onChange={(e) => setModelQuery(e.target.value)}
               className="w-full px-4 py-2 bg-slate-700 rounded-lg text-white border border-slate-600 focus:outline-none focus:border-indigo-500"
