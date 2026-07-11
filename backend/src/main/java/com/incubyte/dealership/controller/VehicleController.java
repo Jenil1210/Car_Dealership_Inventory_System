@@ -1,5 +1,7 @@
 package com.incubyte.dealership.controller;
 
+import com.incubyte.dealership.dto.VehicleResponse;
+import com.incubyte.dealership.mapper.VehicleMapper;
 import com.incubyte.dealership.model.Vehicle;
 import com.incubyte.dealership.service.VehicleService;
 import jakarta.validation.Valid;
@@ -26,30 +28,38 @@ public class VehicleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Vehicle>> getAllVehicles() {
-        return ResponseEntity.ok(vehicleService.getAllVehicles());
+    public ResponseEntity<List<VehicleResponse>> getAllVehicles() {
+        List<VehicleResponse> responses = vehicleService.getAllVehicles().stream()
+                .map(VehicleMapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Vehicle>> searchVehicles(
+    public ResponseEntity<List<VehicleResponse>> searchVehicles(
             @RequestParam(required = false) String make,
             @RequestParam(required = false) String model,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice) {
-        return ResponseEntity.ok(vehicleService.searchVehicles(make, model, category, minPrice, maxPrice));
+        List<VehicleResponse> responses = vehicleService.searchVehicles(make, model, category, minPrice, maxPrice).stream()
+                .map(VehicleMapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(responses);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Vehicle> addVehicle(@Valid @RequestBody Vehicle vehicle) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(vehicleService.addVehicle(vehicle));
+    public ResponseEntity<VehicleResponse> addVehicle(@Valid @RequestBody Vehicle vehicle) {
+        VehicleResponse response = VehicleMapper.toResponse(vehicleService.addVehicle(vehicle));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Vehicle> updateVehicle(@PathVariable UUID id, @Valid @RequestBody Vehicle vehicle) {
-        return ResponseEntity.ok(vehicleService.updateVehicle(id, vehicle));
+    public ResponseEntity<VehicleResponse> updateVehicle(@PathVariable UUID id, @Valid @RequestBody Vehicle vehicle) {
+        VehicleResponse response = VehicleMapper.toResponse(vehicleService.updateVehicle(id, vehicle));
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
