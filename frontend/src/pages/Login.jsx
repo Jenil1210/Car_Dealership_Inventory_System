@@ -88,6 +88,12 @@ function Login() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+        <p className="mt-6 text-center text-sm text-slate-400">
+          Don't have an account?{' '}
+          <a href="/register" className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors underline">
+            Register here
+          </a>
+        </p>
       </div>
     </div>
   );

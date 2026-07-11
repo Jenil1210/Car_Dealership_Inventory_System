@@ -134,6 +134,12 @@ function Register() {
             {loading ? 'Creating Account...' : 'Register'}
           </button>
         </form>
+        <p className="mt-6 text-center text-sm text-slate-400">
+          Already have an account?{' '}
+          <a href="/login" className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors underline">
+            Login here
+          </a>
+        </p>
       </div>
     </div>
   );
