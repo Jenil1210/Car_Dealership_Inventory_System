@@ -57,4 +57,25 @@ class AuthServiceTest {
         assertEquals("Bob", savedUser.getName());
         assertTrue(passwordEncoder.matches("Password@123", savedUser.getPassword()));
     }
+
+    @Test
+    void register_shouldThrowIllegalArgumentException_whenEmailIsAlreadyTaken() {
+        // Pre-saving a user
+        User existingUser = User.builder()
+                .name("Alice")
+                .email("alice@example.com")
+                .password("password")
+                .role(Role.USER)
+                .build();
+        userRepository.save(existingUser);
+
+        RegisterRequest request = RegisterRequest.builder()
+                .name("New Alice")
+                .email("alice@example.com")
+                .password("Password@123")
+                .role(Role.USER)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> authService.register(request));
+    }
 }
