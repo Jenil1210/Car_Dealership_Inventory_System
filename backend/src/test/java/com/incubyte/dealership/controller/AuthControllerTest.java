@@ -2,6 +2,7 @@ package com.incubyte.dealership.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.incubyte.dealership.dto.AuthResponse;
+import com.incubyte.dealership.dto.LoginRequest;
 import com.incubyte.dealership.dto.RegisterRequest;
 import com.incubyte.dealership.model.Role;
 import com.incubyte.dealership.service.AuthService;
@@ -70,6 +71,41 @@ class AuthControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void login_shouldReturnJwtTokenAndStatusOk_whenCredentialsAreValid() throws Exception {
+        LoginRequest request = LoginRequest.builder()
+                .email("alice@example.com")
+                .password("Password@123")
+                .build();
+
+        AuthResponse response = AuthResponse.builder()
+                .token("mocked-login-token")
+                .role(Role.USER)
+                .build();
+
+        when(authService.login(any(LoginRequest.class))).thenReturn(response);
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").value("mocked-login-token"))
+                .andExpect(jsonPath("$.role").value("USER"));
+    }
+
+    @Test
+    void login_shouldReturnBadRequest_whenRequestHasValidationErrors() throws Exception {
+        LoginRequest request = LoginRequest.builder()
+                .email("invalid-email") // Invalid email format
+                .password("") // Blank password
+                .build();
+
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
