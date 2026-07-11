@@ -25,6 +25,61 @@ A full-stack Car Dealership Inventory System built with **Test-Driven Developmen
 
 ---
 
+## Test Cases & TDD Coverage
+
+This project has been fully developed using **Test-Driven Development (TDD)**. All requirements outlined in the assessment have been validated through our automated test suites.
+
+### ⚙️ Backend Tests (`JUnit 5` + `Mockito` + `MockMvc`)
+Our backend suite contains **56 test cases** covering repository operations, service layers, and web API controller rules:
+
+* **Authentication & JWT (`AuthServiceTest`, `JwtServiceTest`)**
+  * `register_shouldSaveUserAndReturnToken_whenRequestIsValid`: Happy path registration.
+  * `register_shouldThrowIllegalArgumentException_whenEmailIsAlreadyTaken`: Handles duplicate registrations.
+  * `login_shouldReturnJwtToken_whenCredentialsAreValid`: Verification of credentials.
+  * `login_shouldThrowIllegalArgumentException_whenPasswordIsWrong`: Prevents invalid login access.
+  * JWT generation, parsing, validation, and token signing tests.
+* **User Management (`UserServiceTest`, `UserControllerTest`)**
+  * `getAllUsers_shouldReturn200AndList_whenAdmin`: Admin retrieval of users.
+  * `getAllUsers_shouldReturn403_whenNotAdmin`: REST authorization guard.
+  * `deleteUser_shouldReturn204NoContent_whenAdmin`: Admin user deletion.
+  * `deleteUser_shouldReturn403Forbidden_whenNotAdmin`: Delete protection constraint.
+  * Profile endpoint retrieval for authenticated users (`GET /api/users/me`).
+* **Vehicle Inventory (`VehicleServiceTest`, `VehicleControllerTest`, `VehicleRepositoryTest`)**
+  * Adding a vehicle adds it to the repository and updates details (restricted to Admin role).
+  * Updating a vehicle allows modification of manufacturer, model, price, and category (restricted to Admin role).
+  * Deleting a vehicle removes it from the active database (restricted to Admin role).
+  * Searching for vehicles dynamically filters by combinations of make, model, category, minimum price, and maximum price.
+* **Purchase & Restocking Operations**
+  * Purchasing a vehicle reduces the database inventory quantity.
+  * Purchasing throws an exception if the purchase quantity exceeds the current stock.
+  * Restocking a vehicle increases stock (restricted to Admin role).
+* **Startup Database Seeding (`AdminUserSeederTest`)**
+  * Verifies default system administrator account is seeded on application startup.
+
+### 💻 Frontend Tests (`Vitest` + `React Testing Library`)
+Our frontend suite contains **15 test cases** testing UI routing, event handlers, API hooks, and local storage:
+
+* **User Authentication (`Login.test.jsx`, `Register.test.jsx`)**
+  * Renders email, password, and registration inputs properly.
+  * Submitting login calls `/auth/login`, saves JWT to `localStorage`, and redirects.
+  * Submitting register validation checks password mismatches and registers.
+* **Vehicles Dashboard (`Dashboard.test.jsx`)**
+  * Renders the list of active vehicles fetched from the backend.
+  * Submitting the search query filters the vehicle list display.
+  * Clicking **Purchase** triggers a `POST` API call and immediately refreshes the inventory display.
+  * Clicking **Logout** clears localStorage state and redirects to `/login`.
+* **Admin Control Panel (`AdminDashboard.test.jsx`)**
+  * Renders CRUD forms (manufacturer, model, price, category, qty) and lists active vehicles.
+  * Submitting new vehicle details issues a `POST` request and clears the inputs.
+  * Clicking **Delete** on a vehicle card triggers a `DELETE` API request and updates the view.
+  * Entering restocking quantity and clicking **Restock** calls the restocking API.
+  * Clicking **Edit** populates form fields, changes button text, and submits a `PUT` API request.
+* **System Routing (`App.test.jsx`)**
+  * Redirects unauthenticated users to `/login` from any route.
+  * Restricts `/admin` dashboard to authenticated users with the `ADMIN` role.
+
+---
+
 ## Setup Instructions
 
 ### Prerequisites
