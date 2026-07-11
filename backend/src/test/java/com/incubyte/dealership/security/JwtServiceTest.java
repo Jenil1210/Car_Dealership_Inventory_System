@@ -32,4 +32,18 @@ class JwtServiceTest {
         assertNotNull(token);
         assertTrue(token.length() > 0);
     }
+
+    @Test
+    void extractUsername_shouldReturnCorrectEmail() {
+        User user = User.builder()
+                .name("Alice")
+                .email("alice@example.com")
+                .password("password")
+                .role(Role.USER)
+                .build();
+
+        String token = jwtService.generateToken(user);
+        String email = jwtService.extractUsername(token);
+        assertEquals("alice@example.com", email);
+    }
 }
