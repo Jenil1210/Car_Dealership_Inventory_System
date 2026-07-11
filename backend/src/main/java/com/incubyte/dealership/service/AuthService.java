@@ -1,6 +1,7 @@
 package com.incubyte.dealership.service;
 
 import com.incubyte.dealership.dto.AuthResponse;
+import com.incubyte.dealership.dto.LoginRequest;
 import com.incubyte.dealership.dto.RegisterRequest;
 import com.incubyte.dealership.model.User;
 import com.incubyte.dealership.repository.UserRepository;
@@ -37,6 +38,21 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+
+        String jwtToken = jwtService.generateToken(user);
+        return AuthResponse.builder()
+                .token(jwtToken)
+                .role(user.getRole())
+                .build();
+    }
+
+    public AuthResponse login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
 
         String jwtToken = jwtService.generateToken(user);
         return AuthResponse.builder()
