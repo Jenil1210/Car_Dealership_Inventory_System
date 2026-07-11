@@ -1,8 +1,7 @@
 package com.incubyte.dealership.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * User Entity representing a registered user or administrator.
@@ -11,6 +10,9 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
