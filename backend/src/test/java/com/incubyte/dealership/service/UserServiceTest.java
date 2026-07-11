@@ -45,4 +45,26 @@ class UserServiceTest {
         assertNotNull(found);
         assertEquals("alice@example.com", found.getEmail());
     }
+
+    // Sprint 56 RED: Failing test — user not found should throw exception
+    @Test
+    void getUserById_shouldThrowException_whenUserDoesNotExist() {
+        assertThrows(IllegalArgumentException.class,
+                () -> userService.getUserById(99999L));
+    }
+
+    // Sprint 57 RED: Failing test — deleteUserById removes user
+    @Test
+    void deleteUserById_shouldRemoveUser_whenUserExists() {
+        User saved = userRepository.save(User.builder()
+                .name("Bob")
+                .email("bob@example.com")
+                .password("hashedpassword")
+                .role(Role.USER)
+                .build());
+
+        userService.deleteUserById(saved.getId());
+
+        assertFalse(userRepository.existsById(saved.getId()));
+    }
 }
