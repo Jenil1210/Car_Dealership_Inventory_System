@@ -32,7 +32,21 @@ function Register() {
       localStorage.setItem('role', role);
       window.location.href = '/dashboard';
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed');
+      if (err.response?.data) {
+        if (err.response.data.error) {
+          setError(err.response.data.error);
+        } else if (err.response.data.email) {
+          setError(err.response.data.email);
+        } else if (err.response.data.name) {
+          setError(err.response.data.name);
+        } else if (err.response.data.password) {
+          setError(err.response.data.password);
+        } else {
+          setError('Registration failed');
+        }
+      } else {
+        setError('Connection failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

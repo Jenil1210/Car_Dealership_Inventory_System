@@ -6,6 +6,9 @@ function Dashboard() {
   const [error, setError] = useState('');
   const [makeQuery, setMakeQuery] = useState('');
   const [modelQuery, setModelQuery] = useState('');
+  const [categoryQuery, setCategoryQuery] = useState('');
+  const [minPriceQuery, setMinPriceQuery] = useState('');
+  const [maxPriceQuery, setMaxPriceQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [toast, setToast] = useState({ message: '', type: '' });
 
@@ -30,6 +33,9 @@ function Dashboard() {
       const params = {};
       if (makeQuery) params.make = makeQuery;
       if (modelQuery) params.model = modelQuery;
+      if (categoryQuery) params.category = categoryQuery;
+      if (minPriceQuery) params.minPrice = minPriceQuery;
+      if (maxPriceQuery) params.maxPrice = maxPriceQuery;
       const response = await client.get('/vehicles/search', { params });
       setVehicles(response.data);
       showToast(`Found ${response.data.length} vehicles matching search.`);
@@ -146,44 +152,90 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Search form */}
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 bg-slate-900/30 border border-slate-800 p-6 rounded-3xl">
-          <div>
-            <label htmlFor="make" className="block text-xs font-bold mb-2 text-slate-400 uppercase tracking-wider">Make (Manufacturer)</label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i className="fa-solid fa-industry"></i></span>
-              <input
-                type="text"
-                id="make"
-                value={makeQuery}
-                onChange={(e) => setMakeQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 rounded-xl text-white border border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-500"
-                placeholder="e.g. Tesla"
-              />
+        <form onSubmit={handleSearch} className="space-y-4 mb-8 bg-slate-900/30 border border-slate-800 p-6 rounded-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div>
+              <label htmlFor="make" className="block text-xs font-bold mb-2 text-slate-400 uppercase tracking-wider">Make (Manufacturer)</label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i className="fa-solid fa-industry"></i></span>
+                <input
+                  type="text"
+                  id="make"
+                  value={makeQuery}
+                  onChange={(e) => setMakeQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 rounded-xl text-white border border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-500"
+                  placeholder="e.g. Tesla"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="model" className="block text-xs font-bold mb-2 text-slate-400 uppercase tracking-wider">Model</label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i className="fa-solid fa-qrcode"></i></span>
+                <input
+                  type="text"
+                  id="model"
+                  value={modelQuery}
+                  onChange={(e) => setModelQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 rounded-xl text-white border border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-500"
+                  placeholder="e.g. Model 3"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="category" className="block text-xs font-bold mb-2 text-slate-400 uppercase tracking-wider">Category</label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i className="fa-solid fa-layer-group"></i></span>
+                <input
+                  type="text"
+                  id="category"
+                  value={categoryQuery}
+                  onChange={(e) => setCategoryQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 rounded-xl text-white border border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-500"
+                  placeholder="e.g. Electric"
+                />
+              </div>
             </div>
           </div>
-          <div>
-            <label htmlFor="model" className="block text-xs font-bold mb-2 text-slate-400 uppercase tracking-wider">Model</label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i className="fa-solid fa-qrcode"></i></span>
-              <input
-                type="text"
-                id="model"
-                value={modelQuery}
-                onChange={(e) => setModelQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 rounded-xl text-white border border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-500"
-                placeholder="e.g. Model 3"
-              />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
+            <div>
+              <label htmlFor="minPrice" className="block text-xs font-bold mb-2 text-slate-400 uppercase tracking-wider">Min Price ($)</label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i className="fa-solid fa-dollar-sign"></i></span>
+                <input
+                  type="number"
+                  id="minPrice"
+                  value={minPriceQuery}
+                  onChange={(e) => setMinPriceQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 rounded-xl text-white border border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-500"
+                  placeholder="Min Price"
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex items-end">
-            <button
-              type="submit"
-              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-bold transition-all duration-200 cursor-pointer text-white shadow-lg shadow-indigo-500/20 active:scale-[0.98] flex items-center justify-center gap-2"
-            >
-              <i className="fa-solid fa-magnifying-glass"></i>
-              Search
-            </button>
+            <div>
+              <label htmlFor="maxPrice" className="block text-xs font-bold mb-2 text-slate-400 uppercase tracking-wider">Max Price ($)</label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i className="fa-solid fa-dollar-sign"></i></span>
+                <input
+                  type="number"
+                  id="maxPrice"
+                  value={maxPriceQuery}
+                  onChange={(e) => setMaxPriceQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 rounded-xl text-white border border-slate-700/80 focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-500"
+                  placeholder="Max Price"
+                />
+              </div>
+            </div>
+            <div className="flex items-end">
+              <button
+                type="submit"
+                className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-bold transition-all duration-200 cursor-pointer text-white shadow-lg shadow-indigo-500/20 active:scale-[0.98] flex items-center justify-center gap-2"
+              >
+                <i className="fa-solid fa-magnifying-glass"></i>
+                Search
+              </button>
+            </div>
           </div>
         </form>
 

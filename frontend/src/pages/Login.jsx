@@ -24,7 +24,19 @@ function Login() {
         window.location.href = '/dashboard';
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials');
+      if (err.response?.data) {
+        if (err.response.data.error) {
+          setError(err.response.data.error);
+        } else if (err.response.data.email) {
+          setError(err.response.data.email);
+        } else if (err.response.data.password) {
+          setError(err.response.data.password);
+        } else {
+          setError('Invalid details');
+        }
+      } else {
+        setError('Connection failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

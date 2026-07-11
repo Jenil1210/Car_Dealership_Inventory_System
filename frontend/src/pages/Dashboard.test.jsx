@@ -56,13 +56,22 @@ describe('Dashboard Component', () => {
 
     fireEvent.change(screen.getByLabelText(/make/i), { target: { value: 'Tesla' } });
     fireEvent.change(screen.getByLabelText(/model/i), { target: { value: 'Model Y' } });
+    fireEvent.change(screen.getByLabelText(/category/i), { target: { value: 'Electric' } });
+    fireEvent.change(screen.getByLabelText(/min price/i), { target: { value: '30000' } });
+    fireEvent.change(screen.getByLabelText(/max price/i), { target: { value: '60000' } });
     
     const searchBtn = screen.getByRole('button', { name: /search/i });
     fireEvent.click(searchBtn);
 
     await waitFor(() => {
       expect(client.get).toHaveBeenLastCalledWith('/vehicles/search', {
-        params: { make: 'Tesla', model: 'Model Y' },
+        params: {
+          make: 'Tesla',
+          model: 'Model Y',
+          category: 'Electric',
+          minPrice: '30000',
+          maxPrice: '60000'
+        },
       });
     });
   });
