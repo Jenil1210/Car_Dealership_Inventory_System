@@ -8,6 +8,7 @@ import client from '../api/client';
 vi.mock('../api/client', () => ({
   default: {
     get: vi.fn(),
+    post: vi.fn(),
   },
 }));
 
@@ -47,10 +48,9 @@ describe('Dashboard Component', () => {
     expect(localStorage.getItem('token')).toBeNull();
   });
 
-  // Sprints 77 & 78: Search Filter Test
   it('calls search API with params when search form is submitted', async () => {
-    client.get.mockResolvedValueOnce({ data: [] }); // Initial mount fetch
-    client.get.mockResolvedValueOnce({ data: [] }); // Search fetch
+    client.get.mockResolvedValueOnce({ data: [] });
+    client.get.mockResolvedValueOnce({ data: [] });
 
     render(<Dashboard />);
 
@@ -64,6 +64,30 @@ describe('Dashboard Component', () => {
       expect(client.get).toHaveBeenLastCalledWith('/vehicles/search', {
         params: { make: 'Tesla', model: 'Model Y' },
       });
+    });
+  });
+
+  // Sprints 84 & 85: Test purchase button triggers API call and refreshes inventory list
+  it('calls POST purchase API when purchase button is clicked and refreshes list', async () => {
+    const fakeVehicles = [
+      { id: '1', make: 'Tesla', model: 'Model 3', category: 'Electric', price: 45000, quantity: 5 },
+    ];
+    client.get.mockResolvedValueOnce({ data: fakeVehicles }); // mount fetch
+    client.post.mockResolvedValueOnce({
+      data: { id: '1', make: 'Tesla', model: 'Model 3', category: 'Electric', price: 45000, quantity: 4 }
+    }); // purchase mock
+    client.get.mockResolvedValueOnce({
+      data: [{ id: '1', make: 'Tesla', model: 'Model 3', category: 'Electric', price: 45000, quantity: 4 }]
+    }); // refetch mock
+
+    render(<Dashboard />);
+
+    const purchaseBtn = await screen.findByRole('button', { name: /purchase/i });
+    fireEvent.click(purchaseBtn);
+
+    await waitFor(() => {
+      expect(client.post).toHaveBeenCalledWith('/vehicles/1/purchase?quantity=1');
+      expect(screen.getByText('4 available')).toBeInTheDocument();
     });
   });
 });
