@@ -79,4 +79,37 @@ class VehicleRepositoryTest {
         assertEquals(1, found.size());
         assertEquals("SUV", found.get(0).getCategory());
     }
+
+    @Test
+    void search_shouldReturnMatchingVehicles_whenFilteredByPriceRange() {
+        Vehicle v1 = Vehicle.builder()
+                .make("Toyota")
+                .model("Yaris")
+                .category("Hatchback")
+                .price(new BigDecimal("15000.00"))
+                .quantity(1)
+                .build();
+        Vehicle v2 = Vehicle.builder()
+                .make("Toyota")
+                .model("Corolla")
+                .category("Sedan")
+                .price(new BigDecimal("20000.00"))
+                .quantity(2)
+                .build();
+        Vehicle v3 = Vehicle.builder()
+                .make("Toyota")
+                .model("Camry")
+                .category("Sedan")
+                .price(new BigDecimal("28000.00"))
+                .quantity(3)
+                .build();
+        vehicleRepository.save(v1);
+        vehicleRepository.save(v2);
+        vehicleRepository.save(v3);
+
+        List<Vehicle> found = vehicleRepository.search(null, null, null, new BigDecimal("18000.00"), new BigDecimal("25000.00"));
+
+        assertEquals(1, found.size());
+        assertEquals("Corolla", found.get(0).getModel());
+    }
 }
