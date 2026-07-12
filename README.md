@@ -30,30 +30,6 @@ A full-stack Car Dealership Inventory System built with **Test-Driven Developmen
 
 🟢 **Completed & Deployed** — All user stories and technical constraints fully satisfied.
 
-## 📸 Application Screenshots
-
-### 🔑 1. Authentication Portal (Login & Register)
-Modern split-screen interface displaying custom wireframe vehicle graphics, premium golden theme highlights, and secure input containers.
-![User Login](docs/screenshots/login.png)
-![User Registration](docs/screenshots/register.png)
-
-### 🏎️ 2. Car List (Customer Showroom)
-Fully interactive showroom displaying supercars with real-time stock quantity indicators, filter console controls, and purchase buttons.
-![Customer Showroom Dashboard](docs/screenshots/dashboard.png)
-
-### 📊 3. Purchase History
-User transaction ledger displaying purchased vehicles, prices, dates, and quantity metrics.
-![Purchase Logs](docs/screenshots/purchase_history.png)
-
-### 🛠️ 4. Admin Dashboard
-Administrative status monitor with stats for active models, total units, low stock alerts, and categories.
-![Admin Dashboard](docs/screenshots/admin_dashboard.png)
-
-### ➕ 5. Add & Manage Vehicles
-Creation and edit controls for cataloging new assets, modifying details, restocking, and deleting items.
-![Add Vehicle Control](docs/screenshots/admin_dashboard.png)
-
----
 
 ## ⚙️ Test Cases & TDD Coverage
 
