@@ -7,6 +7,8 @@ if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
 
 const BASE = 'http://localhost:5173';
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function shot(page, name) {
   await page.screenshot({ path: path.join(OUT_DIR, name), fullPage: true });
   console.log(`✅ Saved: ${name}`);
@@ -40,17 +42,17 @@ async function shot(page, name) {
     await page.goto(`${BASE}/dashboard`, { waitUntil: 'networkidle2' });
   }
 
-  await page.waitForTimeout(1500);
+  await delay(1500);
   await shot(page, 'dashboard.png');
 
   // 5. Scroll down to purchase history
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await page.waitForTimeout(800);
+  await delay(800);
   await shot(page, 'purchase_history.png');
 
   // 6. Admin dashboard
   await page.goto(`${BASE}/admin`, { waitUntil: 'networkidle2' });
-  await page.waitForTimeout(1000);
+  await delay(1000);
   await shot(page, 'admin_dashboard.png');
 
   await browser.close();

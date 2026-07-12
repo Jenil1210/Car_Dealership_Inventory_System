@@ -190,7 +190,7 @@ function AdminDashboard() {
           </button>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-rose-650 hover:bg-rose-600 active:bg-rose-700 rounded-xl text-white font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-500 active:bg-rose-700 rounded-xl text-white font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer"
           >
             <i className="fa-solid fa-right-from-bracket"></i>
             Logout
@@ -388,7 +388,7 @@ function AdminDashboard() {
           </div>
           
           {vehicles.length === 0 ? (
-            <div className="text-center text-slate-550 py-16 bg-[#121216]/10 border border-white/5 border-dashed rounded-3xl">
+            <div className="text-center text-slate-500 py-16 bg-[#121216]/10 border border-white/5 border-dashed rounded-3xl">
               <i className="fa-solid fa-boxes-stacked text-3xl text-slate-700 mb-4"></i>
               <p className="font-extrabold uppercase tracking-wider text-xs text-slate-400">No vehicles registered in inventory yet.</p>
               <button
@@ -423,7 +423,7 @@ function AdminDashboard() {
                     <p className="text-slate-500 text-xs mt-1.5 flex items-center gap-2">
                       <span>Value: <span className="font-bold text-slate-300 font-mono">${vehicle.price.toLocaleString()}</span></span>
                       <span className="text-slate-700">|</span>
-                      <span>Stock: <span className={`font-bold ${vehicle.quantity <= 2 ? 'text-amber-400' : 'text-slate-350'}`}>Qty: {vehicle.quantity}</span></span>
+                      <span>Stock: <span className={`font-bold ${vehicle.quantity <= 2 ? 'text-amber-400' : 'text-slate-300'}`}>Qty: {vehicle.quantity}</span></span>
                     </p>
                   </div>
                   
@@ -441,7 +441,7 @@ function AdminDashboard() {
                       />
                       <button
                         onClick={() => handleRestock(vehicle.id)}
-                        className="px-4 py-2 bg-gradient-to-r from-emerald-650 to-teal-650 hover:brightness-110 rounded-lg text-white text-xxs font-black uppercase tracking-widest transition-all cursor-pointer"
+                        className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:brightness-110 rounded-lg text-white text-xxs font-black uppercase tracking-widest transition-all cursor-pointer"
                       >
                         Restock
                       </button>
@@ -457,7 +457,7 @@ function AdminDashboard() {
                     
                     <button
                       onClick={() => handleDeleteVehicle(vehicle.id)}
-                      className="px-4 py-2 bg-rose-650 hover:bg-rose-600 rounded-xl text-white text-xxs font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-1.5"
+                      className="px-4 py-2 bg-rose-600 hover:bg-rose-500 rounded-xl text-white text-xxs font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-1.5"
                     >
                       <i className="fa-solid fa-trash-can"></i>
                       Delete
