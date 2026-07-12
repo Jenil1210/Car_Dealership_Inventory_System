@@ -147,7 +147,7 @@ class VehicleControllerTest {
                 .price(new BigDecimal("25000")).quantity(3)
                 .build();
 
-        when(vehicleService.purchaseVehicle(id, 2)).thenReturn(updated);
+        when(vehicleService.purchaseVehicle(eq(id), eq(2), any())).thenReturn(updated);
 
         mockMvc.perform(post("/api/vehicles/" + id + "/purchase?quantity=2"))
                 .andExpect(status().isOk())

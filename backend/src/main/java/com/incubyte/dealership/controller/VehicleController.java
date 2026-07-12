@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -118,7 +119,8 @@ public class VehicleController {
      */
     @PostMapping("/{id}/purchase")
     public ResponseEntity<VehicleResponse> purchaseVehicle(@PathVariable UUID id, @RequestParam int quantity) {
-        VehicleResponse response = VehicleMapper.toResponse(vehicleService.purchaseVehicle(id, quantity));
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        VehicleResponse response = VehicleMapper.toResponse(vehicleService.purchaseVehicle(id, quantity, email));
         return ResponseEntity.ok(response);
     }
 

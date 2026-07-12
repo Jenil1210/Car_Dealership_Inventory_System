@@ -1,13 +1,19 @@
 /* Global Reset and Utilities */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
 html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #0f172a; /* bg-slate-900 equivalent */
-  color: #f8fafc; /* text-slate-50 */
+  background-color: #070709; /* Ultra-premium showroom obsidian black */
+  background-image: 
+    radial-gradient(circle at 15% 20%, rgba(30, 25, 50, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(15, 30, 45, 0.25) 0%, transparent 45%);
+  color: #f1f5f9; /* Slate 100 equivalent */
   font-family: 'Outfit', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 #root {
@@ -16,20 +22,142 @@ body {
   flex-direction: column;
 }
 
-/* Custom Scrollbar for modern aesthetics */
+/* Custom Scrollbar for luxury touch */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #09090c;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569;
-  border-radius: 4px;
+  background: #1c1c24;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: #dfa959; /* Brushed Gold hover */
+}
+
+/* Luxury Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(18, 18, 24, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.45);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Premium Gold Text and Background Gradients */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fff7ed 0%, #fcd34d 30%, #dfa959 70%, #b5893d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #fcd34d 0%, #dfa959 50%, #b5893d 100%);
+}
+
+.cyan-gradient-text {
+  background: linear-gradient(135deg, #e0f7fa 0%, #00f5ff 50%, #0288d1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border-hover:hover {
+  border-color: rgba(223, 169, 89, 0.4);
+  box-shadow: 0 0 20px rgba(223, 169, 89, 0.12);
+}
+
+/* Luxury Showroom Podium Card Class */
+.showroom-podium-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.showroom-podium-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.04),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: 0.85s;
+}
+
+.showroom-podium-card:hover::before {
+  left: 150%;
+}
+
+.showroom-podium-card:hover {
+  transform: translateY(-8px) scale(1.015);
+  border-color: rgba(223, 169, 89, 0.35);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.6), 
+    0 0 25px rgba(223, 169, 89, 0.08);
+}
+
+/* Input Styles */
+.premium-input {
+  background-color: rgba(10, 10, 14, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-input:focus {
+  outline: none;
+  border-color: rgba(223, 169, 89, 0.5);
+  box-shadow: 0 0 0 3px rgba(223, 169, 89, 0.15);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Custom Checkbox styles for clean luxury feel */
+.checkbox-gold {
+  accent-color: #dfa959;
 }

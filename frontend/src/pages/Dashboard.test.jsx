@@ -23,7 +23,8 @@ describe('Dashboard Component', () => {
       { id: '1', make: 'Tesla', model: 'Model 3', category: 'Electric', price: 45000, quantity: 5 },
       { id: '2', make: 'Ford', model: 'Mustang', category: 'Sports', price: 55000, quantity: 2 },
     ];
-    client.get.mockResolvedValueOnce({ data: fakeVehicles });
+    client.get.mockResolvedValueOnce({ data: fakeVehicles }); // mount vehicles
+    client.get.mockResolvedValueOnce({ data: [] }); // mount purchases
 
     render(<Dashboard />);
 
@@ -37,7 +38,8 @@ describe('Dashboard Component', () => {
   });
 
   it('clears localStorage and redirects on logout click', async () => {
-    client.get.mockResolvedValueOnce({ data: [] });
+    client.get.mockResolvedValueOnce({ data: [] }); // mount vehicles
+    client.get.mockResolvedValueOnce({ data: [] }); // mount purchases
     localStorage.setItem('token', 'some-token');
 
     render(<Dashboard />);
@@ -49,8 +51,9 @@ describe('Dashboard Component', () => {
   });
 
   it('calls search API with params when search form is submitted', async () => {
-    client.get.mockResolvedValueOnce({ data: [] });
-    client.get.mockResolvedValueOnce({ data: [] });
+    client.get.mockResolvedValueOnce({ data: [] }); // mount vehicles
+    client.get.mockResolvedValueOnce({ data: [] }); // mount purchases
+    client.get.mockResolvedValueOnce({ data: [] }); // search query
 
     render(<Dashboard />);
 
@@ -81,13 +84,15 @@ describe('Dashboard Component', () => {
     const fakeVehicles = [
       { id: '1', make: 'Tesla', model: 'Model 3', category: 'Electric', price: 45000, quantity: 5 },
     ];
-    client.get.mockResolvedValueOnce({ data: fakeVehicles }); // mount fetch
+    client.get.mockResolvedValueOnce({ data: fakeVehicles }); // mount vehicles
+    client.get.mockResolvedValueOnce({ data: [] }); // mount purchases
     client.post.mockResolvedValueOnce({
       data: { id: '1', make: 'Tesla', model: 'Model 3', category: 'Electric', price: 45000, quantity: 4 }
     }); // purchase mock
     client.get.mockResolvedValueOnce({
       data: [{ id: '1', make: 'Tesla', model: 'Model 3', category: 'Electric', price: 45000, quantity: 4 }]
-    }); // refetch mock
+    }); // refetch vehicles
+    client.get.mockResolvedValueOnce({ data: [] }); // refetch purchases
 
     render(<Dashboard />);
 

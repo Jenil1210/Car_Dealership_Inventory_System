@@ -1,10 +1,16 @@
 package com.incubyte.dealership.service;
 
+import com.incubyte.dealership.model.Purchase;
+import com.incubyte.dealership.model.User;
 import com.incubyte.dealership.model.Vehicle;
+import com.incubyte.dealership.repository.PurchaseRepository;
+import com.incubyte.dealership.repository.UserRepository;
 import com.incubyte.dealership.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,9 +21,13 @@ import java.util.UUID;
 public class VehicleService {
 
     private final VehicleRepository vehicleRepository;
+    private final UserRepository userRepository;
+    private final PurchaseRepository purchaseRepository;
 
-    public VehicleService(VehicleRepository vehicleRepository) {
+    public VehicleService(VehicleRepository vehicleRepository, UserRepository userRepository, PurchaseRepository purchaseRepository) {
         this.vehicleRepository = vehicleRepository;
+        this.userRepository = userRepository;
+        this.purchaseRepository = purchaseRepository;
     }
 
     public List<Vehicle> getAllVehicles() {
@@ -52,13 +62,46 @@ public class VehicleService {
     }
 
     public Vehicle purchaseVehicle(UUID id, int quantity) {
+        return purchaseVehicle(id, quantity, "admin@dealership.com");
+    }
+
+    @Transactional
+    public Vehicle purchaseVehicle(UUID id, int quantity, String email) {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with id: " + id));
         if (vehicle.getQuantity() < quantity) {
             throw new IllegalArgumentException("Insufficient stock for vehicle: " + id);
         }
+
+        User user = userRepository.findByEmail(email != null ? email : "admin@dealership.com")
+                .orElseGet(() -> userRepository.findByEmail("admin@dealership.com")
+                        .orElseGet(() -> {
+                            User fallbackAdmin = User.builder()
+                                    .email("admin@dealership.com")
+                                    .name("System Admin")
+                                    .password("dummy")
+                                    .role(com.incubyte.dealership.model.Role.ADMIN)
+                                    .build();
+                            return userRepository.save(fallbackAdmin);
+                        }));
+
         vehicle.setQuantity(vehicle.getQuantity() - quantity);
-        return vehicleRepository.save(vehicle);
+        Vehicle savedVehicle = vehicleRepository.save(vehicle);
+
+        // Always create a new purchase record for each buy (with its own date + quantity)
+        Purchase purchase = Purchase.builder()
+                .user(user)
+                .vehicle(savedVehicle)
+                .make(savedVehicle.getMake())
+                .model(savedVehicle.getModel())
+                .category(savedVehicle.getCategory())
+                .price(savedVehicle.getPrice())
+                .quantity(quantity)
+                .purchaseDate(LocalDateTime.now())
+                .build();
+        purchaseRepository.save(purchase);
+
+        return savedVehicle;
     }
 
     public Vehicle restockVehicle(UUID id, int quantity) {

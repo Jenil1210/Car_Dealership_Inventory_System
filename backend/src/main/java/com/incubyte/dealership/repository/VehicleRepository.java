@@ -17,9 +17,9 @@ import java.util.UUID;
 public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
 
     @Query("SELECT v FROM Vehicle v WHERE " +
-            "(:make IS NULL OR LOWER(v.make) LIKE LOWER(CONCAT('%', :make, '%'))) AND " +
-            "(:model IS NULL OR LOWER(v.model) LIKE LOWER(CONCAT('%', :model, '%'))) AND " +
-            "(:category IS NULL OR LOWER(v.category) LIKE LOWER(CONCAT('%', :category, '%'))) AND " +
+            "(:make IS NULL OR LOWER(v.make) LIKE LOWER(CONCAT('%', CAST(:make AS string), '%'))) AND " +
+            "(:model IS NULL OR LOWER(v.model) LIKE LOWER(CONCAT(CAST(:model AS string), '%'))) AND " +
+            "(:category IS NULL OR LOWER(v.category) LIKE LOWER(CONCAT('%', CAST(:category AS string), '%'))) AND " +
             "(:minPrice IS NULL OR v.price >= :minPrice) AND " +
             "(:maxPrice IS NULL OR v.price <= :maxPrice)")
     List<Vehicle> search(

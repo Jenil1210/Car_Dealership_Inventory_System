@@ -111,6 +111,7 @@
     </dependencies>
 
     <build>
+        <finalName>Car_Inventory</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
