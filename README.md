@@ -36,7 +36,7 @@ A full-stack Car Dealership Inventory System built with **Test-Driven Developmen
 This project has been fully developed using **Test-Driven Development (TDD)**. All requirements outlined in the assessment have been validated through our automated test suites.
 
 ### ⚙️ Backend Tests (`JUnit 5` + `Mockito` + `MockMvc`)
-Our backend suite contains **56 test cases** covering repository operations, service layers, and web API controller rules:
+Our backend suite contains **58 test cases** covering repository operations, service layers, and web API controller rules:
 
 * **Authentication & JWT (`AuthServiceTest`, `JwtServiceTest`)**
   * `register_shouldSaveUserAndReturnToken_whenRequestIsValid`: Happy path registration.
@@ -83,6 +83,55 @@ Our frontend suite contains **15 test cases** testing UI routing, event handlers
 * **System Routing (`App.test.jsx`)**
   * Redirects unauthenticated users to `/login` from any route.
   * Restricts `/admin` dashboard to authenticated users with the `ADMIN` role.
+
+---
+
+## 📸 Visual Showroom Showcase
+
+### 🔑 1. Secure Authentication Console (Login & Register)
+A luxury split-screen design featuring a custom digital supercar wireframe aesthetic and a frosted glassmorphic card overlay for secure authentication.
+![User Login Screen](docs/screenshots/login.png)
+![User Registration Screen](docs/screenshots/register.png)
+
+### 🏎️ 2. Customer Showroom Dashboard
+A premium digital showroom catalog allowing users to browse vehicles in real-time, search and filter dynamically, and purchase items with immediate quantity deductions.
+![Customer Showroom Dashboard](docs/screenshots/dashboard.png)
+
+### 📊 3. Purchase History & Transaction Ledger
+A secure tracking ledger showcasing user transactions, purchase timestamps, price breakdowns, and order logs.
+![Purchase Logs](docs/screenshots/purchase_history.png)
+
+### 🛠️ 4. Administrative Control Center
+A comprehensive admin interface to add new vehicles, edit listings, delete entries, and restock low-inventory items.
+![Admin Console Dashboard](docs/screenshots/admin_dashboard.png)
+
+---
+
+## 📊 Automated Test Reports
+
+Both backend and frontend codebases are validated with full TDD coverage, ensuring robust functionality.
+
+### ☕ Backend JUnit 5 Report
+```text
+Results:
+
+Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:08 min
+[INFO] Finished at: 2026-07-12T13:57:48+05:30
+[INFO] ------------------------------------------------------------------------
+```
+
+### ⚛️ Frontend Vitest Report
+```text
+ Test Files  5 passed (5)
+      Tests  15 passed (15)
+   Start at  13:58:12
+   Duration  8.19s (transform 1.27s, setup 1.78s, import 4.23s, tests 5.61s, environment 20.89s)
+```
 
 ---
 
