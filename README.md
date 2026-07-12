@@ -2,202 +2,261 @@
 
 > **TDD Kata — Incubyte Assessment**
 
-A full-stack Car Dealership Inventory System built with **Test-Driven Development (TDD)**, following the Red-Green-Refactor pattern.
+A full-stack Car Dealership Inventory System built with **Test-Driven Development (TDD)**, following the **Red-Green-Refactor** methodology. The system enables secure user authentication, role-based authorization, vehicle inventory management, advanced search, purchase tracking, and inventory analytics.
 
 ---
 
-## Tech Stack
+# Tech Stack
 
 | Layer | Technology |
-|---|---|
+|--------|------------|
 | Backend | Java 17 + Spring Boot 3 |
 | Database | PostgreSQL |
-| Auth | JWT (jjwt) |
+| Authentication | JWT (jjwt) |
 | Frontend | React 18 + Vite |
 | Testing | JUnit 5 + Mockito + MockMvc |
+| Frontend Testing | Vitest + React Testing Library |
 | Coverage | JaCoCo |
 
 ---
 
-## 🌐 Deployed Live Demo (Optional - Brownie Points)
+# 🌐 Live Demo
 
-* **Frontend Showroom (Vercel)**: [https://car-dealership-inventory-system-x9j.vercel.app](https://car-dealership-inventory-system-x9j.vercel.app)
-* **Backend API (AWS Elastic Beanstalk - Proxied)**: [https://car-dealership-inventory-system-x9j.vercel.app/api](https://car-dealership-inventory-system-x9j.vercel.app/api)
-
----
-
-## Project Status
-
-🟢 **Completed & Deployed** — All user stories and technical constraints fully satisfied.
-
-
-## ⚙️ Test Cases & TDD Coverage
-
-This project has been developed using **Test-Driven Development (TDD)**. All requirements outlined in the assessment have been validated through our automated test suites.
-
-### ☕ Backend Test Details (`JUnit 5` + `Mockito` + `MockMvc`)
-Our backend suite contains **58 test cases** covering repository operations, service layers, and web API controllers:
-
-* **Authentication & JWT Security (`AuthServiceTest`, `JwtServiceTest`)**
-  * `register_shouldSaveUserAndReturnToken_whenRequestIsValid`: Happy path registration.
-  * `register_shouldThrowIllegalArgumentException_whenEmailIsAlreadyTaken`: Handles duplicate registrations.
-  * `login_shouldReturnJwtToken_whenCredentialsAreValid`: Verification of credentials.
-  * `login_shouldThrowIllegalArgumentException_whenPasswordIsWrong`: Prevents invalid login access.
-  * Token generation, token parsing, and secure signing validation checks.
-* **User Management (`UserServiceTest`, `UserControllerTest`)**
-  * `getAllUsers_shouldReturn200AndList_whenAdmin`: Admin retrieval of users.
-  * `getAllUsers_shouldReturn403_whenNotAdmin`: REST authorization guard.
-  * `deleteUser_shouldReturn204NoContent_whenAdmin`: Admin user deletion.
-  * `deleteUser_shouldReturn403Forbidden_whenNotAdmin`: Delete protection constraint.
-  * Profile endpoint retrieval for authenticated users (`GET /api/users/me`).
-* **Vehicle Inventory (`VehicleServiceTest`, `VehicleControllerTest`, `VehicleRepositoryTest`)**
-  * Adding a vehicle adds it to the repository and updates details (restricted to Admin role).
-  * Updating a vehicle allows modification of manufacturer, model, price, and category (restricted to Admin role).
-  * Deleting a vehicle removes it from the active database (restricted to Admin role).
-  * Searching for vehicles dynamically filters by combinations of make, model, category, minimum price, and maximum price.
-* **Purchase & Restocking Operations**
-  * Purchasing a vehicle reduces the database inventory quantity.
-  * Purchasing throws an exception if the purchase quantity exceeds the current stock.
-  * Restocking a vehicle increases stock (restricted to Admin role).
-* **Startup Database Seeding (`AdminUserSeederTest`)**
-  * Verifies default system administrator account is seeded on application startup.
-
-### 💻 Frontend Test Details (`Vitest` + `React Testing Library`)
-Our frontend suite contains **15 test cases** testing UI routing, event handlers, API hooks, and local storage:
-
-* **User Authentication (`Login.test.jsx`, `Register.test.jsx`)**
-  * Renders email, password, and registration inputs properly.
-  * Submitting login calls `/auth/login`, saves JWT to `localStorage`, and redirects.
-  * Submitting register validation checks password mismatches and registers.
-* **Vehicles Dashboard (`Dashboard.test.jsx`)**
-  * Renders the list of active vehicles fetched from the backend.
-  * Submitting the search query filters the vehicle list display.
-  * Clicking **Purchase** triggers a `POST` API call and immediately refreshes the inventory display.
-  * Clicking **Logout** clears localStorage state and redirects to `/login`.
-* **Admin Control Panel (`AdminDashboard.test.jsx`)**
-  * Renders CRUD forms (manufacturer, model, price, category, qty) and lists active vehicles.
-  * Submitting new vehicle details issues a `POST` request and clears the inputs.
-  * Clicking **Delete** on a vehicle card triggers a `DELETE` API request and updates the view.
-  * Entering restocking quantity and clicking **Restock** calls the restocking API.
-  * Clicking **Edit** populates form fields, changes button text, and submits a `PUT` API request.
-* **System Routing (`App.test.jsx`)**
-  * Redirects unauthenticated users to `/login` from any route.
-  * Restricts `/admin` dashboard to authenticated users with the `ADMIN` role.
+- **Frontend (Vercel):** https://car-dealership-inventory-system-x9j.vercel.app
+- **Backend API:** https://car-dealership-inventory-system-x9j.vercel.app/api
 
 ---
 
-## 📊 Automated Test Execution Reports
+# Project Status
 
-### ☕ Backend JUnit 5 Report
+🟢 **Completed & Deployed**
+
+✔ JWT Authentication
+
+✔ Role Based Authorization
+
+✔ Vehicle Inventory CRUD
+
+✔ Advanced Search
+
+✔ Purchase History
+
+✔ Restocking System
+
+✔ TDD Implementation
+
+✔ Responsive UI
+
+---
+
+# ⚙️ Test Cases & TDD Coverage
+
+This project follows **Test Driven Development (TDD)** throughout the development lifecycle.
+
+## Backend Testing (JUnit 5 + Mockito + MockMvc)
+
+**58 Automated Test Cases**
+
+### Authentication & JWT
+- User Registration
+- Duplicate Email Validation
+- User Login
+- Invalid Password Handling
+- JWT Generation
+- JWT Validation
+- Token Parsing
+
+### User Management
+- Get Users
+- Delete User
+- Authorization Validation
+- Profile Retrieval
+
+### Vehicle Inventory
+- Add Vehicle
+- Update Vehicle
+- Delete Vehicle
+- Search Vehicles
+- Filtering
+
+### Purchase & Stock
+- Purchase Vehicle
+- Out Of Stock Validation
+- Restock Inventory
+
+### Seeder
+- Default Admin User
+
+---
+
+## Frontend Testing (Vitest + React Testing Library)
+
+**15 Automated Test Cases**
+
+### Authentication
+- Login Page
+- Register Page
+- Validation
+- JWT Storage
+
+### Dashboard
+- Load Vehicles
+- Search
+- Purchase
+- Logout
+
+### Admin Dashboard
+- Add Vehicle
+- Delete Vehicle
+- Update Vehicle
+- Restock Vehicle
+
+### Routing
+- Protected Routes
+- Admin Route Validation
+
+---
+
+# 📊 Automated Test Reports
+
+## Backend
+
 ```text
 Results:
 
-Tests run: 58, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 58
+Failures: 0
+Errors: 0
+Skipped: 0
 
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  01:08 min
-[INFO] Finished at: 2026-07-12T13:57:48+05:30
-[INFO] ------------------------------------------------------------------------
+BUILD SUCCESS
 ```
 
-### ⚛️ Frontend Vitest Report
+## Frontend
+
 ```text
- Test Files  5 passed (5)
-      Tests  15 passed (15)
-   Start at  13:58:12
-   Duration  8.19s (transform 1.27s, setup 1.78s, import 4.23s, tests 5.61s, environment 20.89s)
+Test Files 5 passed
+Tests 15 passed
 ```
 
 ---
 
-## Setup Instructions
+# 🚀 Application Walkthrough
 
-### Prerequisites
-- **Java 17+** (JDK 17 or JDK 21 installed)
-- **Maven 3.8+**
-- **Node.js 18+** & **npm** (for the frontend application)
-- **PostgreSQL 14+** (configured database for production/development profile)
+The following screenshots demonstrate the primary workflows and features of the Car Dealership Inventory System.
 
 ---
 
-### Backend Setup & Execution
+## 🔑 Authentication Portal
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Configure database credentials inside `src/main/resources/application.properties` (specifically `spring.datasource.username` and `spring.datasource.password`).
-3. Build the application and compile dependencies:
-   ```bash
-   mvn clean compile
-   ```
-4. Run the automated test suite (uses H2 in-memory DB by default):
-   ```bash
-   mvn test
-   ```
-5. Start the Spring Boot backend server (runs on port `8080`):
-   ```bash
-   mvn spring-boot:run
-   ```
+Secure JWT-based authentication with dedicated login and registration pages.
+
+![Authentication](docs/screenshots/login.png)
 
 ---
 
-### Frontend Setup & Execution
+## 📊 Admin Inventory Management Dashboard
 
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependency packages:
-   ```bash
-   npm install
-   ```
-3. Run the Vitest unit/integration test suite:
-   ```bash
-   npm run test
-   ```
-4. Launch the local React development server:
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:5173](http://localhost:5173) in your browser to view the application.
+Administrative dashboard displaying inventory statistics, low stock alerts, total categories, active models, and complete inventory management controls.
+
+![Admin Dashboard](docs/screenshots/admin_dashboard.png)
 
 ---
 
-## My AI Usage
+## ➕ Vehicle Management
 
-This project was built in pairing collaboration with **Antigravity (Google DeepMind)**, an AI coding assistant. 
+Administrators can add new vehicles, update inventory details, restock existing vehicles, and remove vehicles from the catalog.
 
-### Tools Used
-* **Antigravity (Google DeepMind)**: Served as the primary pairing partner for code design, refactoring, TDD test writing, and bug hunting.
-
-### AI Assistance Log
-1. **TDD RED-GREEN-REFACTOR Cycle**: Assisted in writing failing JUnit/Mockito tests in the backend and Vitest/Testing-Library tests in the frontend, followed by implementation to make them pass.
-2. **Backend Services & API Controllers**: Co-authored Spring Security rules, Jwt filters, User and Vehicle REST controllers, and automated seeder scripts.
-3. **Frontend Component Development**: Built the dashboard pages, search filters, stateful restocking inputs, edit/update modals, and routing guard components.
-4. **Build & Test Automation**: Provided command line instructions, executed build verification steps, and investigated surefire reports and DOM dumps to fix bugs.
-
-### Reflection
-The AI pairing model significantly increased development velocity by handling repetitive boilerplate, generating mock test scenarios, and ensuring that SOLID principles were adhered to throughout refactoring phases. The structured TDD cycle worked seamlessly with automated test suggestions.
+![Vehicle Management](docs/screenshots/vehicle_management.png)
 
 ---
 
-## Git Commit Convention
+## 🚗 Customer Showroom & Advanced Search
 
-This project follows **Conventional Commits** with a TDD pattern:
+Customers can browse available vehicles, filter inventory by manufacturer, model, category, and price range, then purchase available vehicles.
+
+![Customer Dashboard](docs/screenshots/customer_dashboard.png)
+
+---
+
+## 📜 Purchase History
+
+Authenticated users can securely review their purchase history including acquisition date, category, quantity, and purchase value.
+
+![Purchase History](docs/screenshots/purchase_history.png)
+
+---
+
+# Setup Instructions
+
+## Prerequisites
+
+- Java 17+
+- Maven 3.8+
+- Node.js 18+
+- PostgreSQL
+
+---
+
+## Backend
+
+```bash
+cd backend
+
+mvn clean compile
+
+mvn test
+
+mvn spring-boot:run
+```
+
+---
+
+## Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm run test
+
+npm run dev
+```
+
+---
+
+# 🤖 AI Usage
+
+This project was developed using AI pair programming with **Antigravity (Google DeepMind)**.
+
+### AI Assisted Tasks
+
+- TDD Test Case Generation
+- Spring Boot Development
+- JWT Authentication
+- REST API Development
+- React Components
+- State Management
+- Bug Fixing
+- Refactoring
+- Documentation
+
+---
+
+# Git Commit Convention
 
 ```
-test:     Writing a failing test (🔴 RED)
-feat:     Implementing the feature (🟢 GREEN)
-refactor: Cleaning up code (🔵 REFACTOR)
-chore:    Setup, config, dependencies
-style:    CSS, formatting
+test:     RED
+feat:     GREEN
+refactor: REFACTOR
 docs:     Documentation
+style:    UI Changes
+chore:    Configuration
 ```
 
-Every AI-assisted commit includes:
+Every AI-assisted commit includes
+
 ```
 Co-authored-by: Antigravity (Google DeepMind) <AI@users.noreply.github.com>
 ```
