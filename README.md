@@ -105,3 +105,60 @@ This project was developed using AI pair programming with **Google Gemini & Clua
 - Documentation
 
 ---
+
+# Git Commit Convention
+
+```
+test:     RED
+feat:     GREEN
+refactor: REFACTOR
+docs:     Documentation
+style:    UI Changes
+chore:    Configuration
+```
+
+Every AI-assisted commit includes
+
+```
+Co-authored-by: Antigravity (Google DeepMind) <AI@users.noreply.github.com>
+```
+
+---
+
+# 🖼️ Showcase Gallery
+
+The following screenshots highlight the finished design and workflows of the Car Dealership Inventory System.
+
+### 🔐 Modern Portal Login
+The login screen featuring custom glassmorphism panels, luxury vehicle wireframe outlines, and gold color styling.
+![Modern Portal Login](images/Screenshot%202026-07-12%20135208.png)
+
+---
+
+### 🛠️ Administrative Dashboard Control Panel
+Management view tracking active models, total units in stock, low-stock warnings, and direct restock/catalog commands.
+![Admin Dashboard Control Panel](images/Screenshot%202026-07-12%20135246.png)
+
+---
+
+### 📥 Catalog New Asset Dialog
+The interactive modal for registering and cataloging new premium vehicles into the dealership database.
+![Catalog New Asset Dialog](images/Screenshot%202026-07-12%20135258%20-%20Copy.png)
+
+---
+
+### 🔍 Customer Showroom Search & Filter Console
+The customer landing view displaying active stock summaries and the live filtering console for searching models.
+![Search & Filter Console](images/Screenshot%202026-07-12%20135354.png)
+
+---
+
+### 🛒 Active Showroom Catalog Cards
+Showroom product cards with custom vehicle outline designs, availability tags, and purchase triggers.
+![Showroom Cards](images/Screenshot%202026-07-12%20135413.png)
+
+---
+
+### 📜 Customer Secure Garage & Acquisition Log
+The secure customer profile log showing purchased vehicles, transaction dates, and total values.
+![Secure Garage Log](images/Screenshot%202026-07-12%20135436.png)
