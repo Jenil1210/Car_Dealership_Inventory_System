@@ -19,11 +19,33 @@ A full-stack Car Dealership Inventory System built with **Test-Driven Developmen
 
 ---
 
-## Project Status
+## 🌐 Deployed Live Demo (Optional - Brownie Points)
 
-🚧 **In Progress** — Being built sprint by sprint using TDD methodology.
+* **Frontend Showroom (Vercel)**: [https://car-dealership-inventory-system-x9j.vercel.app](https://car-dealership-inventory-system-x9j.vercel.app)
+* **Backend API (AWS Elastic Beanstalk - Proxied)**: [https://car-dealership-inventory-system-x9j.vercel.app/api](https://car-dealership-inventory-system-x9j.vercel.app/api)
 
 ---
+
+## 📸 Application Screenshots
+
+### 🔑 Authentication Portal
+Custom login & registration forms featuring digital overlays and validation styling.
+![Login Screen](docs/screenshots/login.png)
+
+### 🏎️ Customer Showroom Dashboard
+Interactive catalog displaying available vehicles with real-time stock levels, dynamic search filters, and one-click purchase operations.
+![Customer Dashboard](docs/screenshots/dashboard.png)
+
+### 🛠️ Admin Control Console
+Admin interface for vehicle inventory management (Add, Edit, Delete) and restocking items.
+![Admin Dashboard](docs/screenshots/admin_dashboard.png)
+
+---
+
+## Project Status
+
+🟢 **Completed & Deployed** — All user stories and technical constraints fully satisfied.
+
 
 ## Test Cases & TDD Coverage
 
