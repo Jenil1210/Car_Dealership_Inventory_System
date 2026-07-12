@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Get API base URL from environment or default to local development backend
-const API_URL = import.meta.env.VITE_API_URL || 'http://carinventory-env.eba-dqnmziid.eu-north-1.elasticbeanstalk.com/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const client = axios.create({
   baseURL: API_URL,
