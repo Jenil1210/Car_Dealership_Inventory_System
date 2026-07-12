@@ -141,51 +141,9 @@ Tests 15 passed
 
 ---
 
-# 🚀 Application Walkthrough
 
-The following screenshots demonstrate the primary workflows and features of the Car Dealership Inventory System.
 
----
 
-## 🔑 Authentication Portal
-
-Secure JWT-based authentication with dedicated login and registration pages.
-
-![Authentication](docs/screenshots/login.png)
-
----
-
-## 📊 Admin Inventory Management Dashboard
-
-Administrative dashboard displaying inventory statistics, low stock alerts, total categories, active models, and complete inventory management controls.
-
-![Admin Dashboard](docs/screenshots/admin_dashboard.png)
-
----
-
-## ➕ Vehicle Management
-
-Administrators can add new vehicles, update inventory details, restock existing vehicles, and remove vehicles from the catalog.
-
-![Vehicle Management](docs/screenshots/vehicle_management.png)
-
----
-
-## 🚗 Customer Showroom & Advanced Search
-
-Customers can browse available vehicles, filter inventory by manufacturer, model, category, and price range, then purchase available vehicles.
-
-![Customer Dashboard](docs/screenshots/customer_dashboard.png)
-
----
-
-## 📜 Purchase History
-
-Authenticated users can securely review their purchase history including acquisition date, category, quantity, and purchase value.
-
-![Purchase History](docs/screenshots/purchase_history.png)
-
----
 
 # Setup Instructions
 
