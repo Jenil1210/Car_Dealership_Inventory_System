@@ -87,8 +87,6 @@ This project follows **Test Driven Development (TDD)** throughout the developmen
 ### Seeder
 - Default Admin User
 
----
----
 
 # 🤖 AI Usage
 
@@ -107,6 +105,3 @@ This project was developed using AI pair programming with **Google Gemini & Clua
 - Documentation
 
 ---
-```
-
-```
