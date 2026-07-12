@@ -18,10 +18,10 @@ public class AdminUserSeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${admin.email:admin@dealership.com}")
+    @Value("${admin.email:apex.admin@apexmotors.com}")
     private String adminEmail;
 
-    @Value("${admin.password:Admin@123}")
+    @Value("${admin.password:ApexMotorsSecurity2026!}")
     private String adminPassword;
 
     @Value("${admin.name:System Admin}")

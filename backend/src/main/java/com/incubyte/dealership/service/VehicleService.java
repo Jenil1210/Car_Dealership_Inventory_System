@@ -20,6 +20,9 @@ import java.util.UUID;
 @Service
 public class VehicleService {
 
+    @org.springframework.beans.factory.annotation.Value("${admin.email:admin@dealership.com}")
+    private String adminEmail;
+
     private final VehicleRepository vehicleRepository;
     private final UserRepository userRepository;
     private final PurchaseRepository purchaseRepository;
@@ -61,23 +64,24 @@ public class VehicleService {
         vehicleRepository.deleteById(id);
     }
 
-    public Vehicle purchaseVehicle(UUID id, int quantity) {
-        return purchaseVehicle(id, quantity, "admin@dealership.com");
+    @Transactional
+    public synchronized Vehicle purchaseVehicle(UUID id, int quantity) {
+        return purchaseVehicle(id, quantity, adminEmail);
     }
 
     @Transactional
-    public Vehicle purchaseVehicle(UUID id, int quantity, String email) {
-        Vehicle vehicle = vehicleRepository.findById(id)
+    public synchronized Vehicle purchaseVehicle(UUID id, int quantity, String email) {
+        Vehicle vehicle = vehicleRepository.findByIdForWrite(id)
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with id: " + id));
         if (vehicle.getQuantity() < quantity) {
             throw new IllegalArgumentException("Insufficient stock for vehicle: " + id);
         }
 
-        User user = userRepository.findByEmail(email != null ? email : "admin@dealership.com")
-                .orElseGet(() -> userRepository.findByEmail("admin@dealership.com")
+        User user = userRepository.findByEmail(email != null ? email : adminEmail)
+                .orElseGet(() -> userRepository.findByEmail(adminEmail)
                         .orElseGet(() -> {
                             User fallbackAdmin = User.builder()
-                                    .email("admin@dealership.com")
+                                    .email(adminEmail)
                                     .name("System Admin")
                                     .password("dummy")
                                     .role(com.incubyte.dealership.model.Role.ADMIN)

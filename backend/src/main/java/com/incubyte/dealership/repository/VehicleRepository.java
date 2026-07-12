@@ -29,4 +29,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
             @Param("minPrice") BigDecimal minPrice,
             @Param("maxPrice") BigDecimal maxPrice
     );
+    @org.springframework.data.jpa.repository.Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT v FROM Vehicle v WHERE v.id = :id")
+    java.util.Optional<Vehicle> findByIdForWrite(@Param("id") java.util.UUID id);
 }

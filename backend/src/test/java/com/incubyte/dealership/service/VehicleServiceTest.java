@@ -28,8 +28,12 @@ class VehicleServiceTest {
     @Autowired
     private VehicleRepository vehicleRepository;
 
+    @Autowired
+    private com.incubyte.dealership.repository.PurchaseRepository purchaseRepository;
+
     @BeforeEach
     void setUp() {
+        purchaseRepository.deleteAll();
         vehicleRepository.deleteAll();
     }
 
@@ -164,5 +168,50 @@ class VehicleServiceTest {
 
         assertEquals(12, result.getQuantity());
         assertEquals(12, vehicleRepository.findById(saved.getId()).orElseThrow().getQuantity());
+    }
+
+    @Test
+    @Transactional(propagation = org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED)
+    void purchaseVehicle_shouldHandleConcurrentPurchasesCorrectly() throws InterruptedException {
+        Vehicle saved = vehicleRepository.save(Vehicle.builder()
+                .make("Toyota").model("Camry").category("Sedan")
+                .price(new BigDecimal("25000")).quantity(10).build());
+
+        int numThreads = 5;
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newFixedThreadPool(numThreads);
+        java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(1);
+        java.util.concurrent.CountDownLatch finishLatch = new java.util.concurrent.CountDownLatch(numThreads);
+
+        java.util.concurrent.atomic.AtomicInteger successCount = new java.util.concurrent.atomic.AtomicInteger(0);
+        java.util.concurrent.atomic.AtomicInteger failureCount = new java.util.concurrent.atomic.AtomicInteger(0);
+
+        for (int i = 0; i < numThreads; i++) {
+            executor.submit(() -> {
+                try {
+                    latch.await();
+                    vehicleService.purchaseVehicle(saved.getId(), 1);
+                    successCount.incrementAndGet();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    failureCount.incrementAndGet();
+                } finally {
+                    finishLatch.countDown();
+                }
+            });
+        }
+
+        latch.countDown(); // trigger all threads to execute simultaneously
+        finishLatch.await();
+        executor.shutdown();
+
+        Vehicle updated = vehicleRepository.findById(saved.getId()).orElseThrow();
+        try {
+            assertEquals(5, successCount.get(), "All 5 purchases should succeed");
+            assertEquals(0, failureCount.get(), "No purchase should fail due to locking conflicts");
+            assertEquals(5, updated.getQuantity(), "Stock should decrement precisely by 5 units");
+        } finally {
+            purchaseRepository.deleteAll();
+            vehicleRepository.delete(updated);
+        }
     }
 }
