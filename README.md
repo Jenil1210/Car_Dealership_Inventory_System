@@ -88,105 +88,11 @@ This project follows **Test Driven Development (TDD)** throughout the developmen
 - Default Admin User
 
 ---
-
-## Frontend Testing (Vitest + React Testing Library)
-
-**15 Automated Test Cases**
-
-### Authentication
-- Login Page
-- Register Page
-- Validation
-- JWT Storage
-
-### Dashboard
-- Load Vehicles
-- Search
-- Purchase
-- Logout
-
-### Admin Dashboard
-- Add Vehicle
-- Delete Vehicle
-- Update Vehicle
-- Restock Vehicle
-
-### Routing
-- Protected Routes
-- Admin Route Validation
-
----
-
-# 📊 Automated Test Reports
-
-## Backend
-
-```text
-Results:
-
-Tests run: 58
-Failures: 0
-Errors: 0
-Skipped: 0
-
-BUILD SUCCESS
-```
-
-## Frontend
-
-```text
-Test Files 5 passed
-Tests 15 passed
-```
-
----
-
-
-
-
-
-# Setup Instructions
-
-## Prerequisites
-
-- Java 17+
-- Maven 3.8+
-- Node.js 18+
-- PostgreSQL
-
----
-
-## Backend
-
-```bash
-cd backend
-
-mvn clean compile
-
-mvn test
-
-mvn spring-boot:run
-```
-
----
-
-## Frontend
-
-```bash
-cd frontend
-
-npm install
-
-npm run test
-
-npm run dev
-```
-
 ---
 
 # 🤖 AI Usage
 
-This project was developed using AI pair programming with **Antigravity (Google DeepMind)**.
+This project was developed using AI pair programming with **Google Gemini & Cluade**.
 
 ### AI Assisted Tasks
 
@@ -201,20 +107,6 @@ This project was developed using AI pair programming with **Antigravity (Google 
 - Documentation
 
 ---
-
-# Git Commit Convention
-
-```
-test:     RED
-feat:     GREEN
-refactor: REFACTOR
-docs:     Documentation
-style:    UI Changes
-chore:    Configuration
 ```
 
-Every AI-assisted commit includes
-
-```
-Co-authored-by: Antigravity (Google DeepMind) <AI@users.noreply.github.com>
 ```
